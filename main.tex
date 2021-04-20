@@ -1,0 +1,321 @@
+\documentclass[12pt,twoside,a4paper]{book}
+
+% ---------------------------------------------------------------------------- %
+% Pacotes 
+\usepackage[T1]{fontenc}
+%\usepackage[portuguese]{babel}
+\usepackage{floatrow}
+\newfloatcommand{capbtabbox}{table}[][\FBwidth]
+\usepackage{blindtext}
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+% \usepackage[latin1]{inputenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[pdftex]{graphicx}           % usamos arquivos pdf/png como figuras
+\usepackage[toc,page]{appendix}
+\usepackage{setspace}                   % espaçamento flexível
+\usepackage{float}
+\usepackage{indentfirst}                % indentação do primeiro parágrafo
+\usepackage{makeidx}                    % índice remissivo
+\usepackage[nottoc,notlot,notlof]{tocbibind}         % acrescentamos a bibliografia/indice/conteudo no Table of Contents
+\usepackage{courier}  % usa o Adobe Courier no lugar de Computer Modern Typewriter
+\usepackage{vowel}
+\usepackage{type1cm}                    % fontes realmente escaláveis
+\usepackage{pdfpages}
+\usepackage{tipa}                       % para utilizar simbolos foneticos
+\usepackage{listings}                   % para formatar código-fonte (ex. em Java)
+\usepackage{titletoc}
+%\usepackage[landscape,dvips]{geometry}
+\usepackage{tabularx} 
+%\addto\captionsportuguese{% Replace "english" with the language you use
+%   \renewcommand{\contentsname}%
+%     {Sumário}%
+% }
+\newcommand{\aup}{\textsuperscript}
+\interfootnotelinepenalty=10000
+\usepackage{lastpage}
+\usepackage{tipa}
+\let\ipa\textipa
+\usepackage[utf8]{inputenc}
+\newcommand{\BlankCell}{}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{booktabs}
+\usepackage{bm}
+\usepackage{epigraph}
+\setlength\epigraphwidth{.6\textwidth}
+\setlength\epigraphrule{0pt}
+
+%\usepackage[bf,small,compact]{titlesec} % cabeçalhos dos títulos: menores e compactos
+\usepackage[fixlanguage]{babelbib}
+\usepackage[font=normalsize,format=plain,labelfont=bf,up,textfont=it,up,skip=0pt]{caption}
+\usepackage[usenames,svgnames,dvipsnames]{xcolor}
+\usepackage[a4paper,top=2.54cm,bottom=2.0cm,left=2.0cm,right=2.54cm]{geometry} % margens
+%\usepackage[pdftex,plainpages=false,pdfpagelabels,pagebackref,colorlinks=true,citecolor=black,linkcolor=black,urlcolor=black,filecolor=black,bookmarksopen=true]{hyperref} % links em preto
+\usepackage[pdftex,plainpages=false,pdfpagelabels,pagebackref,colorlinks=true,citecolor=black,linkcolor=black,urlcolor=black,filecolor=black,bookmarksopen=true]{hyperref} % links coloridos
+\usepackage[all]{hypcap}                    % soluciona o problema com o hyperref e capitulos
+\usepackage[round,sort,nonamebreak]{natbib} % citação bibliográfica textual(plainnat-ime.bst)
+%\setcitestyle{numbers}
+\usepackage{pgfplots}
+\usepackage{hyperref}
+\fontsize{70}{72}\usefont{OT1}{cmr}{m}{n}
+{\selectfont}
+\nocite{*}
+
+% ---------------------------------------------------------------------------- %
+% Cabeçalhos similares ao TAOCP de Donald E. Knuth
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+
+% new commands------------------------
+\usepackage{subcaption}
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\myprime}[1]{{#1}^{\prime}}
+\newcommand{\grad}[2]{\nabla_{#1} {#2}}
+\newcommand{\dotp}[2]{{#1}^{\top}{#2}}
+\newcommand{\dotpPright}[2]{{#1}^{\top}\left({#2}\right)}
+\newcommand{\outerp}[2]{\left({#1}\right){#2}^{\top}}
+\newcommand{\Jacobian}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\Vocab}{\mathbb{V}}
+\newcommand{\corpus}{\mathbb{C}}
+\newcommand{\A}{\mathcal{A}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+ \DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\E}{\mathbb{E}}
+
+% new commands------------------------
+
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{#1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\MakeUppercase{#1}}{}}
+\renewcommand{\headrulewidth}{0pt}
+
+% ---------------------------------------------------------------------------- %
+\graphicspath{{./figuras/}}             % caminho das figuras (recomendável)
+\frenchspacing                          % arruma o espaço: id est (i.e.) e exempli gratia (e.g.) 
+\urlstyle{same}                         % URL com o mesmo estilo do texto e não mono-spaced
+\makeindex                              % para o índice remissivo
+\raggedbottom                           % para não permitir espaços extra no texto
+\fontsize{70}{72}\usefont{OT1}{cmr}{m}{n}{\selectfont}
+\cleardoublepage
+\large
+
+% ---------------------------------------------------------------------------- %
+% Opções de listing usados para o código fonte
+% Ref: http://en.wikibooks.org/wiki/LaTeX/Packages/Listings
+\lstset{ %
+language=Python,                  % choose the language of the code
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it's 1 each line will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,	                % adds a frame around the code
+framerule=0.6pt,
+tabsize=2,	                    % sets default tabsize to 2 spaces
+captionpos=b,                   % sets the caption-position to bottom
+breaklines=true,                % sets automatic line breaking
+breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)},         % if you want to add a comment within your code
+backgroundcolor=\color[rgb]{1.0,1.0,1.0}, % choose the background color.
+rulecolor=\color[rgb]{0.8,0.8,0.8},
+extendedchars=true,
+xleftmargin=10pt,
+xrightmargin=10pt,
+framexleftmargin=10pt,
+framexrightmargin=10pt
+}
+
+% Additional packages
+\usepackage{lscape}
+
+\usepackage{booktabs}
+\usepackage{graphicx}
+% \usepackage[table,xcdraw]{xcolor}
+\usepackage{colortbl}
+\usepackage{algpseudocode}
+\usepackage{soul}
+\usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows}
+
+%circle table
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{% <---- BEWARE
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
+% Declaracoes em Português
+\algrenewcommand\algorithmicend{\textbf{fim}}
+\algrenewcommand\algorithmicdo{\textbf{faça}}
+\algrenewcommand\algorithmicwhile{\textbf{enquanto}}
+\algrenewcommand\algorithmicfor{\textbf{para}}
+\algrenewcommand\algorithmicif{\textbf{se}}
+\algrenewcommand\algorithmicthen{\textbf{então}}
+\algrenewcommand\algorithmicelse{\textbf{senão}}
+\algrenewcommand\algorithmicreturn{\textbf{devolve}}
+\algrenewcommand\algorithmicfunction{\textbf{função}}
+
+% Rearranja os finais de cada estrutura
+\algrenewtext{EndWhile}{\algorithmicend\ \algorithmicwhile}
+\algrenewtext{EndFor}{\algorithmicend\ \algorithmicfor}
+\algrenewtext{EndIf}{\algorithmicend\ \algorithmicif}
+\algrenewtext{EndFunction}{\algorithmicend\ \algorithmicfunction}
+% O comando For, a seguir, retorna 'para #1 -- #2 até #3 faça'
+\algnewcommand\algorithmicto{\textbf{até}}
+\algrenewtext{For}[3]%
+{\algorithmicfor\ #1 $\gets$ #2 \algorithmicto\ #3 \algorithmicdo}
+
+\usepackage{adjustbox}
+\usepackage{fancyvrb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{breakcites}
+
+\usepackage{cases}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\SetKwComment{Comment}{$\triangleright$\ }{}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,backgrounds, arrows.meta}
+\newcommand{\empt}[2]{$#1^{\langle #2 \rangle}$}
+\include{tikz/styles}
+\usepackage{tkz-euclide}
+\usepackage{tikz-3dplot}
+\usepackage{breakcites}
+\usepackage[breaklinks=true]{hyperref}
+
+\include{definitions}
+
+% ---------------------------------------------------------------------------- %
+% Corpo do texto
+\begin{document}
+\frontmatter 
+% cabeçalho para as páginas das seções anteriores ao capítulo 1 (frontmatter)
+\fancyhead[RO]{{\footnotesize\rightmark}\hspace{2em}\thepage}
+% \setcounter{tocdepth}{2}
+\fancyhead[LE]{\thepage\hspace{2em}\footnotesize{\leftmark}}
+\fancyhead[RE,LO]{}
+\fancyhead[RO]{{\footnotesize\rightmark}\hspace{2em}\thepage}
+
+
+\onehalfspacing  % espaçamento
+%\setcounter{chapter}{1}
+\include{capa}
+\makeatletter\@openrightfalse\makeatother
+\pagenumbering{gobble}
+%\include{folhaderosto} 
+%\includepdf[pagecommand={\thispagestyle{plain}},
+%   pages=-]{fichacatalografica.pdf}
+% %\includepdf[pagecommand={\thispagestyle{plain}},
+%   pages=-]{termocienciaeditado.pdf}
+%\include{Aprovacao}
+% ---------------------------------------------------------------------------- %
+% Dedicatória
+%\include{dedicatoria}
+% ---------------------------------------------------------------------------- %
+% Agradecimentos
+
+% %\chapter*{Agradecimentos}
+% \pagenumbering{gobble}
+
+% Posso dizer que eu tive ao meu lado pessoas muito importantes que me ajudaram a passar pela experiência do mestrado de forma incrível. Foram muitos desafios e aprendizados, e sem as pessoas listadas a seguir, certamente esse processo não teria sido tão produtivo. 
+
+% Primeiramente, agradeço à minha família, que me apoiou e incentivou nos meus estudos desde sempre. À minha mãe Valéria, que apesar de não ter tido a oportunidade de acompanhar essa fase da minha vida, observa de longe e se faz presente a cada passo que dou. Não sinto saudades, pois sinto que está comigo sempre. Ao meu pai André, meus avós Astrid e Norberto e aos meus irmãos Fábio e Juliana, pelo amor, carinho e cuidado.
+
+% Sou muito grata também ao meu orientador Marcelo Barra Ferreira. Tenho a sorte de poder dizer que a minha experiência no mestrado foi muito positiva e enriquecedora em um momento muito delicado para a pós-graduação brasileira, e certamente a sua orientação e parceria foi fundamental nesse processo.
+
+% Agradeço aos meus amigos e membros do grupo de estudos em linguística computacional da USP (o GLIC), que me ajudaram e inspiraram. Agradecimentos especiais ao meu colega Bruno Guide, que me ajudou diversas vezes com as minhas questões sobre a pós, muito antes da minha pesquisa começar. Também agradeço à Livy pelo seu olhar crítico e curioso sempre. A forma como todos do grupo amam estudar linguística é incrível. Também agradeço ao querido professor Marcos Lopes, cuja participação também foi fundamental para a minha formação acadêmica e para que o meu ingresso no mundo da linguística ocorresse de maneira leve e agradável.
+
+% Agradeço também aos meus colegas do Datalab, que me apoiaram e incentivaram durante a execução desta pesquisa. Sinto-me muito privilegiada por ter tido o apoio que eu tive no meu ambiente de trabalho e por todas as oportunidades que me foram concedidas para o meu desenvolvimento acadêmico. Agradecimento especial a Estêvão Uyrá, que contribuiu diretamente na execução desta pesquisa com sugestões valiosíssimas. Também sou muito grata ao professor Renato Vicente por ter me incluído em um time tão genial e criativo, além de todo o apoio na minha formação acadêmica e profissional. Também agradeço aos meus colegas Sami e Ricardo, pela compreensão, pelos conselhos e risadas.
+
+% Também não posso deixar de agradecer ao meu colega Felipe Salvatore, doutorando no IME-USP, que me auxiliou com sugestões essenciais para a base computacional desta pesquisa. Às professoras Esmeralda Vailati Negrão e Maria Cristina Altman que me apresentaram ao universo da linguística e me incentivaram a estudar esse assunto com mais profundidade no mestrado.
+
+% Finalmente, a todos aqueles que me apoiaram nos momentos mais difíceis, em especial: Maria Teresa Lamberte, Carlos Joventino, Arthur Athayde, Ramon Vilarino, Thaís Dresch, Marina Nagata e Manu Bonfim. 
+
+% ---------------------------------------------------------------------------- %
+% Abstract
+% \chapter*{Resumo}
+% \pagenumbering{gobble}
+% \noindent Albiero, B. \textbf{O modelo Encoder-Decoder aplicado em irregularidades verbais do Português Brasileiro}. 
+% 2019.
+% Dissertação (Mestrado) - Faculdade de Filosofia e Ciências Humanas,
+% Universidade de São Paulo, São Paulo, 2019.
+% \\
+
+% Inspirada na controversa questão da aquisição de verbos irregulares na língua inglesa (\cite{chomsky:1968},  \cite{Pinker:1988},
+% \cite{Albright2003RulesVA}, \cite{kirov:2018}), esta pesquisa tem como objetivo estudar a questão da flexão de verbos irregulares do Português Brasileiro sob a ótica do modelo computacional \textit{Encoder-Decoder}. Para tanto, a tarefa proposta ao modelo era a de predizer uma forma verbal flexionada dada uma forma primária (\textit{Radical + Vogal Temática}). O escopo da pesquisa restringiu-se ao estudo do paradigma de 1\aup{a} Pessoa do Singular no Modo Indicativo e Tempo Presente. O modelo utilizado, por sua vez, é um modelo de caráter associativo que pertence ao grupo dos modelos de Redes Neurais Artificiais. Também, fez-se necessária a construção de um \textit{corpus} linguístico composto pelo paradigma selecionado e em seguida transcrito em notação fonética específica para viabilizar a utilização do modelo escolhido. O \textit{corpus} produzido é composto por 423 verbos que foram marcados como pertencendo às famílias de verbos regulares (51\%) ou irregulares (49\%). Ainda, dentro do escopo da família de verbos irregulares, foi possível identificar 15 subgrupos conforme a identificação de diferentes padrões de flexão. A partir da notação fonética utilizada, os verbos puderam ser associados a novas representações que englobavam informações relativas aos traços fonéticos presentes. Assim, o modelo proposto tenta predizer as formas flexionadas a partir da identificação das relações fonéticas envolvidas durante o processo de flexão. O modelo apresentado foi submetido a múltiplos treinamentos e testes e apresentou uma acurácia média de 13.55\%, mas chegou a acertar 17\% em um dos experimentos. Considerando a segmentação entre verbos regulares e irregulares, o modelo performou melhor na classe dos regulares. Entretanto, considerando-se todas as 16 classes individualmente (15 irregulares + 1 regular), pôde-se observar que as duas primeiras classes em que o modelo performou melhor eram classes irregulares, deixando a classe regular como a terceira com os melhores resultados.
+
+% \\
+%  \textbf{Palavras-chave:}
+% morfologia verbal, aprendizagem de máquina, conexionismo.
+
+\chapter*{Abstract}
+\pagenumbering{gobble}
+\noindent Albiero, B. \textbf{The Encoder-Decoder Model Applied to Brazilian-Portuguese Verbal Irregularities}. 
+2019.
+Dissertação (Mestrado) - Faculdade de Filosofia e Ciências Humanas,
+Universidade de São Paulo, São Paulo, 2019.
+\\
+
+Inspired by the controversial debate about the acquisition of irregular verbs in English language (\cite{chomsky:1968}, \cite{Pinker:1988},
+\cite{Albright2003RulesVA}, \cite{kirov:2018}), this research aims to study the inflection process of irregular verbs in Portuguese through the perspective of the computational model \textit{Encoder-Decoder}. To do this, we proposed the task of predicting an inflected verbal form given a primary form (\textit{Stem + Thematic Vowel}). The scope of the research was restricted to the study of the singular first-person paradigm in the indicative mood and present tense. The model, in turn, is an associative model that belongs to the group of Artificial Neural Networks models. Also, it was necessary to construct a linguistic \textit{corpus} composed by the chosen paradigm and then transcribe it into a specific phonetic notation to enable the usage of the chosen model. The resulting \textit{corpus} consists of 423 verbs that were marked as belonging to either regular (51\%) or irregular (49\%) verb families. Moreover, within the scope of irregular verbs, it was possible to identify 15 subgroups through the identification of inflection patterns. Through the phonetic notation provided, verbs could be associated with new representations that included information related to the phonetic features. Thus, the proposed model attempts to predict inflected forms by identifying the involved phonetic relationships during the inflection process. The model was submitted to multiple trainings and tests and presented an average accuracy of 13.55\%, but it got to 17\% in one of the experiments. Considering the segmentation between regular and irregular verbs, the model performed better among the regular class. However, considering all 16 classes individually (15 irregular + 1 regular), it was observed that the first two classes in which the model performed best were irregular classes, leaving the regular class with the third place.
+
+\textbf{Key-words:}
+verbal morphology, machine learning, connectionism.
+
+% \tableofcontents
+\pagestyle{fancy}
+\onehalfspacing            % espaçamento um e meio
+\mainmatter
+\pagenumbering{arabic}
+\input{ch00-apresentacao.tex}
+\fancyhead[RE,LO]{\thesection}
+\input{ch01-introduction.tex}
+\input{ch02-fonologia.tex}
+% \input{ch03-redesneurais.tex}
+% \input{ch04-seq2seq.tex}
+% \input{ch05-resultados.tex}
+% \input{ch06-conclusao.tex}
+% Bibliografia
+\setcitestyle{square}
+ \singlespacing   % espaçamento simples
+\bibliographystyle{marcos4} % citação bibliográfica textual
+\bibliography{references}  % associado ao arquivo: 'bibliografia.bib'
+\clearpage
+
+\pagenumbering{gobble}
+\appendix
+
+\chapter{Phonetic Transcription by Rumelhart and McClelland}
+\label{apendice:rumelhart}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.8]{img/rumelhartpreprocess.png}
+    \caption{Preprocessing Table taken from \cite{rumelhart:1986} (page 235)}
+    \label{fig:preprocess-rumelhart}
+\end{figure}
+
+% \chapter{Corpus}
+% \label{ap:corpus}
+% \includepdf[pagecommand={\thispagestyle{plain}},
+%   pages=-]{corpus_dissertacao.pdf}
+
+% \chapter{Resultados das Decodificações}
+% \label{ap:results}
+% \includepdf[pagecommand={\thispagestyle{plain}},
+%   pages=-]{results_analysis_by_family.pdf}
+
+\backmatter
+% cabeçalho para os apendices
+
+% ---------------------------------------------------------------------------- %
+
+
+% ---------------------------------------------------------------------------- %
+
+
+% \printindex   % imprime o índice remissivo no documento 
+
+\end{document}

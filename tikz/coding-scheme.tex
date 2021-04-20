@@ -1,0 +1,64 @@
+\input{definitions/colors}
+\input{definitions/styles}
+\begin{figure}[ht!]
+\centering
+
+\scalebox{0.8}{
+\begin{tikzpicture}[H]
+
+%vetor
+\node[box2] (box1) {0};
+\node[box2, below=0pt of box1] (box2) {0};
+\node[box3, below=0pt of box2] (box3) {1};
+\node[box3, below=0pt of box3] (box4) {1};
+\node[textonly, below=0pt of box4] (box5) {\reflectbox{$\vdots$}};
+\node[box3, below=0pt of box5] (box6) {1};
+\node[box3, below=0pt of box6] (box7) {1};
+\node[box2, below=0pt of box7] (box8) {0};
+\node[box3, below=0pt of box8] (box9) {1};
+\node[box2, below=0pt of box9] (box10) {0};
+\node[textonly, below=0pt of box10] (dim) {dim: 460x1};
+% \node[textonly, below=0pt of box10] (dim) {460x1};
+\node[textonly, below=0pt of dim] (space) {};
+%wickelfeatures
+\node[textonly, right=20pt of box1] (wi1) {\#, plosive, low};
+\node[textonly, right=20pt of box2] (wi2) {\#, back, fricative};
+\node[textonly, right=20pt of box3] (wi3) {\#, interrupted, vowel};
+\node[textonly, right=20pt of box4] (wi4) {\#, back, vowel};
+\node[textonly, right=20pt of box5] (wi5) {\reflectbox{$\vdots$}};
+\node[textonly, right=20pt of box6] (wi6) {\#, unvoiced, low};
+\node[textonly, right=20pt of box7] (wi7) {\#, unvoiced, front};
+\node[textonly, right=20pt of box8] (wi8) {back, vowel, vowel };
+\node[textonly, right=20pt of box9] (wi9) {interrupted, vowel, nasal };
+\node[textonly, right=20pt of box10] (wi10) {fricative, front, \#};
+
+%trigramas
+\node[textonly, left=300pt of wi3] (tri1) {\#,k,A};
+\node[textonly, below=10pt of tri1] (tri2) {k,A,m};
+\node[textonly, below=10pt of tri2] (tri3) {A,m,\#};
+
+
+%legenda
+\node[textonly, right=40pt of wi3] (tit1) {not present};
+\node[textonly, below=10pt of tit1] (tit2) {present};
+
+\node[box2, right=15pt of wi3] (fig1) {};
+\node[box3, below=10pt of fig1] (fig2) {};
+\node[text, below=10pt of wi10] (nada) {};
+
+\draw [decorate,decoration={brace,amplitude=10pt},xshift=-10pt,yshift=0pt]
+(-8.5,-5) -- (-8.5,-1) node [black,midway,xshift=-1cm] 
+{\footnotesize };
+
+
+%features
+\node[textonly, right=20pt of tri1] (f1) {\#, interrupted, vowel};
+\node[textonly, below=0pt of f1] (f2) {\#, interrupted, low};
+\node[textonly, below=0pt of f2] (f3) {\#, unvoiced, long};
+\node[textonly, below=0pt of f3] (f4) {\#, unvoiced, front};
+\node[textonly, below=0pt of f4] (f5) {\reflectbox{$\vdots$}};
+
+\end{tikzpicture}
+}\caption{Coding Scheme by Rumelhart and McClelland} 
+\label{fig:wick}
+\end{figure}

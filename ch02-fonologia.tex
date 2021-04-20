@@ -1,0 +1,521 @@
+\chapter{Preprocesing Verbs for Neural Networks}
+\label{ch:02}
+
+% Este capítulo tratará de uma das partes mais importantes da modelagem em redes neurais: o pré-processamento dos dados. Muito se discute sobre o desenvolvimento de novas técnicas e arquiteturas, mas nem sempre a mesma importância é dada para esse estágio da modelagem - que é, na maioria das vezes, onde se dedica mais tempo. 
+
+The objective of this chapter is to introduce one of the most important steps in Neural Network modelling process: data preprocessing. In the field of Machine Learning, there is frequently a lot of excitement around the development of new modelling techniques and architectures. However, it is fair to say that the step of preprocessing - which is the step we usually spend most of the time -  does not receive this same attention.
+
+In this work, the data of interest are \textit{verbs}, and for a computer, a verb is just a sequence of characters. In addition, a Neural Network model is a computational model. Hence, for the model to work, it is necessary to prepare the data so that they can be used in a format suitable for the calculations to be performed. In this way, even without going into the theoretical part of the model's functioning, it is worth discussing how the verbs will be inserted into the it. Simply put, neural network models are fed with \textit{numeric vectors} (or \textit{arrays}). These vectors are essentially a list of numbers (e.g. [0, 1, 2, 3]). Thus, preprocessing the verbs to feed the model means finding a \textit{vector representation} for each verb. Furthermore, there will be another constraint for this vector representation, which is that all verbs will be represented by vectors of equal length, and that it will be this same length that will define the dimension (number of nodes) of the first layer of the network (the layer of \textit{input}). In addition, it is also at this point that we will define the level of abstraction of the study. In other words, this means that we can cut out a verb in several ways: we can consider that verbs are a sequence of letters, a sequence of phonemes, a sequence of morphemes, etc. However, when we make this cut, we will automatically be skewing the final result of the study. For example, if we describe it by representing a verb using its spelling, the model will fail to find the most subtle relationships between the phonetic elements of that verb. 
+
+% Neste trabalho, os dados de interesse são \textit{verbos}, e para um computador, um verbo é apenas uma sequência de caracteres. Ademais, um modelo de Redes Neurais é um modelo computacional, e para que o modelo funcione, é necessário preparar os dados para que eles estejam em um formato adequado para os cálculos que serão realizados. Desse modo, mesmo sem adentrar na parte teórica do funcionamento do modelo, já cabe discutir de que forma os verbos serão inseridos. Simplificadamente, os modelos de redes neurais são alimentados com \textit{vetores numéricos} (ou \textit{arrays}). Esses vetores são essencialmente uma lista de números (por ex. [0, 1, 2, 3]). Assim, pré-processar os verbos para a alimentação do modelo significa encontrar uma \textit{representação vetorial} para cada um deles. Ainda, teremos que todos os verbos serão representados por vetores de comprimentos iguais, e que será este mesmo comprimento que definirá a dimensão (número de nódulos) da primeira camada da rede (a camada de \textit{input}). Além disso, também é neste momento que definiremos o recorte dos dados - o nível de abstração do estudo, por assim dizer. Em outras palavras, isso significa que podemos recortar um verbo de diversas maneiras: podemos considerar que verbos são uma sequência de letras, ou uma sequência de fones, uma sequência de morfemas, etc. Porém, ao fazermos este recorte, estaremos automaticamente enviesando o resultado final do estudo. Por exemplo, se optarmos por representar um verbo utilizando a escrita ortográfica do mesmo, o modelo falhará em encontrar as relações mais sutis entre os elementos fonéticos desse verbo.
+
+Hence, it is evident the importance of this step. The first section of this chapter will be dedicated to presenting the preprocessing algorithm adopted by \cite{rumelhart:1986}. Next, the corpus used in this research will be introduced. Finally, the last sections of the chapter will be dedicated for the presentation of the preprocessing algorithm used in this work and that will be applied to feed the developed model. In terms of terminology, a disclaimer must be made: sometimes the term \textit{coding} will be used as an option for preprocessing. Similarly, \textit{decodification} and \textit {post-processing} will be used to describe the reverse process.
+
+% Desse modo, fica evidente a importância desta etapa. Falaremos primeiramente sobre o pré-processamento utilizado por \cite{rumelhart:1986}. Em seguida, veremos uma apresentação do corpus utilizado nesta pesquisa para o treinamento do modelo \textit{Encoder-Decoder}. Por fim, será exibido o algoritmo de pré-processamento utilizado neste trabalho para a alimentação do modelo desenvolvido. Ainda, em questão de terminologia, por vezes o termo \textit{codificação} será utilizado como opção a pré-processamento. Analogamente, \textit{decodificação} e \textit{pós-processamento} serão utilizados para descrever o processo inverso. 
+
+\section{Preprocessing presented by Rumelhart \& McClelland}
+\label{sec:transcr}
+The architecture of the model used by \cite{rumelhart:1986} was somewhat limited to the problem of learning the inflection of verbs. The limitation resulted from the fact that both the \textit{inputs} and the \textit{targets} of the model had variable sizes. The \textit{input}, for example, could be “\textit{like}” or “\textit{overtake}”, and the \textit{targets}, “\textit{liked}” and “\textit{overtook} ”. However, the architecture used (already presented in Fig. \ref{fig:esquemafdd}) is composed of a fixed number of nodes in each layer. We could simply assume that each node represented each phone in the phonetic alphabet. Thus, the hypothetical \textit{input} would be the set of phones of the verb. However, in doing so, the network would completely lose track of the phones. Given the limitation, \cite{rumelhart:1986} ended up developing a coding system composed of several steps. We will use the verb "\textit{came}" (the past tense of "\textit{to come}") as an example to detail each of the coding stages used by the researchers.
+
+The first step consisted of transcribing the verbs using an alphabet compatible with the ASCII code (\cite{mackenzie1980coded}). The ASCII code is a code
+used to represent text on computers. It encodes letters of the Latin alphabet, punctuation marks and mathematical signs. The option to use the ASCII code is necessary, as the phonetic code is not interpretable by the programming languages. According to the researchers' transcription key (Appendix A), the verb “\textit{came}” was transcribed to “\#\textit{kAm}\#”. The symbol "\ #" is used to mark the beginning and end of the verb.
+
+However, such an encoding would not be enough. \cite{rumelhart:1986} needed to find a way to present the phones sequentially so that the model could capture the linear order of phonetic information. The problem is that the verb would have to be inserted all at once, so it would not be enough to find representations for each phone individually, it would be necessary to find a complete representation for all phones in the verb and that somehow still preserved some notion of sequence.
+Thus, \cite{rumelhart:1986} had the idea of reusing a concept created by \cite{wickelgren:1969}, the concept of \textit{Wickelphone}. With that, the transcripts were restructured into \textit{trigrams}. Doing this means analyzing the verb sequence in three segments, that is, in this step, the sequence “\ # \textit{kAm} \ #” started to be treated as “\ # \textit{kA}” + “\textit{kAm} ”+“ \textit{Am} \ # ”, each of which is considered a \textit{Wickelphone}.
+
+Despite this, treating verbs with their respective \textit{Wickelphones} would still not be enough for the model of \cite{rumelhart:1986}. The point is that the authors would like the model to be able to identify more subtle relations between verbal forms, that is, to identify relations closer to the sound execution of words than at the level of the phones. In this way, the authors present a new structure inspired by the representation of \textit{Wickelphones} by \cite{wickelgren:1969}, entitled \textit{Wickelfeatures}. The \textit{Wickelfeatures} are precisely the triads of phonetic features introduced in Cap. \ref{ch:01}. As seen in Table \ref{tab:trigrams}, each of the phones can be described by some characteristics related to the execution of their respective sounds. However, the characteristics of the formed trigrams can be combined in many ways, more precisely, $4^{3}$ possibilities, since each phone can be described by 4 dashes (see Appendix A)).
+
+Thus, for the construction of the model's nodes, \cite{rumelhart:1986} computed all possible \textit{Wickelfeatures} between the verbs and excluded some redundant ones to simplify the computation. In the end, the verbs \textit{Wickelfeatures} were mapped as keys in a fixed-length dictionary (a vector) in which the values could assume only 0 or 1; 1 if that \textit{Wickelfeature} was present in the verb and 0 otherwise. Figure \ref{fig:wick} illustrates the coding scheme for the verb “came”.
+
+\input{tikz/coding-scheme.tex}
+
+As mentioned in Chap. \ref{ch:01}, the model of \cite{rumelhart:1986} achieved a reasonable performance, hitting 2/3 of the test set. Despite this, we will see that the \textit{Feedforward} architecture is not the most suitable for this type of problem. First, the proposed coding scheme is quite limited, since the network's \textit{input} vectors can only mark the presence or absence of \textit{Wickelfeatures}. \cite{Pinker:1999} comments on this problem using as an example the word “\textit{algalgal}” (a word from the \textit{Oykangand} language), in which trigrams are repeated. We can observe, in this case, that it would be impossible to mark such repetition by using the chosen representation. Furthermore, we can see that the problem occurs not only in case of repetition of trigrams, but also in cases of repetition of \textit{Wickelfeatures}. As an example of the problem, we can analyze the verb “\textit{understand}”. Table \ref{tab:wickeldertan} displays a comparison between the \textit{Wickelfeatures} of the trigrams \textit{der} and \textit{tan}, both present in the example verb. In the table, we can see that many \textit{Wickelfeatures} are repeated despite the fact that the two trigrams are completely different.
+
+\begin{table}[H]
+    \begin{minipage}{.5\linewidth}
+      \centering
+      \caption{}
+        \begin{tabular}{ccc}
+        d                    & e                    & r                    \\ \hline
+        consonant            & vowel                & consonant            \\
+        voiced              & frontal              & nasal             \\
+        plosive                 & short                & middle                \\
+        middle               & anterior                  & voiced\
+        \end{tabular}
+        %\caption{Wickelfeatures do Trigrama der}
+        \label{tab:der}
+    \end{minipage}%
+    \begin{minipage}{.5\linewidth}
+      \centering
+        \caption{}
+
+    \begin{tabular}{ccc}
+    t                    & a                    & n                    \\ \hline
+    consonant            & vowel                & consonant            \\
+    unvoiced                & front              & long              \\
+    plosive                 & short                & middle                \\
+    middle                & low                  & voiced             \\
+
+    \end{tabular}
+    %\caption{Wickelfeatures do Trigrama tan}
+    \label{tab:tan}
+    \end{minipage} 
+\caption{\textit{Wickelfeatures} de \textit{der} e \textit{tan}}
+\label{tab:wickeldertan}
+\end{table}
+
+In addition, just as verbs have to be processed to enter models as vectors, the model output also needs to be decoded for the reconstruction of the verb - the \textit{decoding} process of the \textit{output} of the model. The decoding process involved a scheme that consisted of several steps. In a simplified way, \cite {rumelhart:1986} listed the candidate trigrams (\textit{Wickelphones}) for each verb and these “competed” for the most relevant \textit{Wickelfeatures} vectors in the model output. As the output from the FFD network is also a vector that stores only the presence or absence of the dashes, and not how many times they appear, the decoding process presents problems to correct verbs with repetitions of \textit{Wickelfeatures}. The problems observed both in coding and in the decoding of the data reflected the need for a more adequate architecture for the problem in question.
+
+\section{Introducing the Corpus}
+\label{sec:corpus}
+The corpus used in this research was built from the list of verbs contained in the address \texturl{www.conjugacao.com.br}.
+
+First, the verbs and their respective inflected forms were extracted from this page to a \textit{.csv} file through a technique called \textit {webscraping}, a technique that extracts information contained in the web pages (\cite{mitchell:2015}). Then, the irregular verbs were selected manually for different families of verbs, that is, groups that contained the same inflection pattern. Some of the irregular verbs listed in the reference source were not irregular in the process of inflection of interest, and therefore were reallocated to the group of regular verbs (see example of the verb \textit{"correr"} in Section \ref{sec:escopo}). In the sequence, the verbs collected in infinitive form had the phone /\textit{r}/ extracted so that  only the stem + thematic vowel of the verbs entered in the model \textit{input}. The reason for this was only a matter of convenience since this markup was redundant because it is present in all verbs.
+
+
+ An experiment was carried out in an attempt to use the automatic phonetic transcriber provided by \cite{guide:2016} to make the transcription process faster. However, the transcriber failed to transcribe verbs whose written forms coincide with nouns, such as: "apoio" (support), "peso" (weight), "toco" (touch/stump), "posto" (post/gas station), "jogo" (play/game); ignoring the phonetic characteristics of these words as verbs.
+ 
+ Thus, the verbs collected were transcribed manually using the transcription key presented in Table \ref{tab:chave}. In total, 423 verbs were obtained, 83 less than in the experiment carried out by (\cite{rumelhart:1986}). Of the 423 verbs extracted, 20 were considered verbs with no possible grouping (such as "ir" (to go), "trazer" (to bring) and "saber" (to know)), totaling a base of 214 regular and 209 irregular verbs (50.6 \% and 49.4 \% respectively). The study by Rumelhart \& McClelland (\citeyear{rumelhart:1986}), in turn, had a portion of irregular verbs of only 20\%.
+
+Table \ref{tab:classes} associates examples of verbs of the classes obtained to their respective counts and proportions in the corpus.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{|l|l|c|c|}
+\toprule
+ & Examples & Count & Portion\\
+\midrule
+1  & ansiar, anseio & 9 & 2.13\%\\
+2  & botar, boto & 30 & 7.09\%\\
+3  & cobrir, cubro & 7 & 1.65\%\\
+4  & dizer, digo & 7 & 1.65\%\\
+5 & fazer, faço & 15 & 3.55\%\\
+6  & crer, creio & 5 & 1.18\%\\
+7  & sentir, sinto & 8 & 1.89\% \\
+8  & pedir, peço & 7 & 1.65\%\\
+9  & pôr, ponho & 27 & 6.38\%\\
+10  & seguir, sigo & 27 & 6.38\%\\
+11  & ter, tenho & 10 & 2.36\%\\
+12  & testar, testo & 20 & 4.73\%\\
+13  & ver, vejo & 6 & 1.42\%\\
+14  & vir, venho & 10 & 2.60\%\\
+15 & saber, sei & 20 & 4.73\%\\
+16  & falar, falo & 214 & 50.59\%\\
+\bottomrule
+\end{tabular}
+\end{center}
+\captionof{table}{Corpus composition}
+\label{tab:classes}
+\end{table}
+
+Although the volume of irregular verbs is considerably greater than the volume used in the study of \cite{rumelhart:1986}, it can be said that some of the families collected show some unproductivity, in the sense that many verbs are reused by others through use of prefixes. For example, the family of the verb “fazer” (to do) is composed only of verbs derived from it: “desfazer” (undo), “refazer” (redo), etc. This can be seen in other classes, such as the verb “cobrir” (to cover), “pedir” (to ask), “dizer” (to say), “ver” (to see), among others. %As classes com maior variabilidade são: (i) as do verbo “botar”, com por exemplo “tocar”, “gostar”, “colocar”; (ii) “testar” com “pegar”, “secar”, “testar”; e (iii) “seguir” com “digerir”, “regredir”, “divertir”.   
+
+\subsection{Types x Tokens}
+Another important issue regarding the corpus used, refers to the frequency in which the verbs are present in it. For this, we introduced the concepts of \textit{word type} and \textit{word token}\cite{peirce:1906}). The term \textit{type}, refers to the number of  \textbf{unique} words present in a Corpus. The phrase "This phrase is an example phrase." Therefore has 6 \textit{types}. The term \textit{token}, in contrast, refers to the total number of terms present, including repetitions. In this case, the same example sentence has 7 \textit{tokens}. Thus, treating verbs as \textit{word tokens} would mean having a corpus that respects the frequency of use of verbs. Treating them as \textit{word types} would mean just treating them as a list of verbs, without repetition.
+
+Discussing the use of \textit{word types} or \textit{word tokens} in the constitution of the corpus is relevant, since the training of Neural Networks takes place{cycles} and we have already seen in Chap. \ref{ch:01} that the network learning consists of adjusting the connection weights. Thus, if the model is fed with verbs at different frequencies, it will tend to prioritize the adjustment of these connections (and therefore of learning as a whole) to the most frequent verbs.
+
+For this research, we chose to use \textit{word types}, i.e., all the verbs were treated equally and introduced the same number of times in model. \footnote{Evidence in the field of psycholinguistics (\cite{Bybee:1995, janet:2018}) indicators that humans learn to generalize phonological patterns based on the count of \textit{types of words}, ignoring the frequency of use of words.}
+
+\section{Preprocessing for the Encoder-Decoder}
+
+In the case of the \textit{Encoder-Decoder} architecture, unlike the architecture used by Rumelhart \& McClelland, there is no reason to be concerned with the data sequence, neither during the insertion process nor in the prediction process. model. The reason for this will become clearer after the chapters 3 and 4. However, what can already be said is that there is no need to treat verbs in trigrams, neither in \textit{Wickelfeatures}. In this type of architecture, verbs can usually be treated as a sequence of phones. However, even with this simplification, there are multiple ways to approach this issue. This work aims to study the relationships between verbs at a phonetic level, so it is important that the constructed vector representations take this into account.
+
+We will start with the presentation of the International Phonetic Alphabet (IPA), presented in Tables \ref{tab:ipa1} and \ref{tab:ipa2}. IPA is a phonetic notation system, created by the International Phonetic Association to promote a standardization in the transcription of data from different languages. It organizes symbols that represent sound units present in human languages based on the characteristics of execution of these units.
+
+
+Table \ref{tab:ipa1} gathers the set of consonant sounds and displays in the dimension of the columns the point of articulation of the sounds, that is, the point where a disturbance of the air passage occurs. The “Bilabial” column, for example, corresponds to the obstruction that occurs on the lips during the production of their respective phones. The lines make up the different possible \textit{modes} of articulation, that is, the forms of obstruction of the air passage. The obstruction can be total as in \textbf{[p]} or partial as in \textbf{[s]}. Finally, within the same cell a sound may occur with or without the vibration of the vocal cords, as is the case with the pair \textbf{[p b]}. The symbol on the left represents the silent sound and the symbol on the right, voiced.
+
+The vowels are organized in Table \ref{tab:ipa2}. The columns in this table refer to the place where the sounds are reproduced (with advance or retreat of the tongue), and the lines, at the height of the tongue in relation to the roof of the mouth during the execution of the sound. When the symbols appear in pairs, the one on the right represents a rounded vowel (\cite{paraconhecer:2015}). As an example of how this table works, it is interesting to observe the execution of the vowel \textbf{[u]} and compare it with the vowel \textbf{[o]}. When pronouncing them for a comparison, the roundness of the lips in both is noted, however the height of the tongue during the execution of the second is slightly lower than the height of the first. To understand the matter of anteriority/posteriority, it is interesting to observe the movement (forward and backward) of the tongue during the execution of \textbf{[e]} and \textbf{[o]}. In this case, it is also noted that \textbf{[o]} has a rounding stroke, while \textbf{[e]} does not.
+
+\begin{center}
+\scalebox{0.76}{
+    \begin{tabular}{|l|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|}
+%\begin{tabular}{|l|cc|}
+        \hline & 
+            \multicolumn{2}{|c|}{\footnotesize{Bilabial}} &					% Bilabial
+            \multicolumn{2}{|c|}{\footnotesize{Labiodental}} & 			% Labiodental
+            \multicolumn{2}{|c|}{\footnotesize{Dental}} & 					% Dental
+            \multicolumn{2}{|c|}{\footnotesize{Alveolar}} & 				% Alveolar
+            \multicolumn{2}{|c|}{\footnotesize{P-alveo.}} & 		% Post-alveolar
+            \multicolumn{2}{|c|}{\footnotesize{Retroflex}} & 				% Retroflex
+            \multicolumn{2}{|c|}{\footnotesize{Palatal}} & 					% Palatal
+            \multicolumn{2}{|c|}{\footnotesize{Velar}} & 					% Velar
+            \multicolumn{2}{|c|}{\footnotesize{Uvular}} & 					% Uvular
+            \multicolumn{2}{|c|}{\footnotesize{Pharyngeal}} & 			% Pharyngeal
+            \multicolumn{2}{|c|}{\footnotesize{Glottal}}  \\% Glottal
+
+        \hline 
+        Plosive &	% Plosive
+            \circled{p} & \circled{b} &													% Bilabial
+            &&														% Labiodental
+            \multicolumn{3}{|r}{\circled{t}}&							% Dental
+            \multicolumn{3}{l|}{\circled{d}}&							% Alveolar
+                                                                        % Post-alveolar
+            \ipa{\:t} & \ipa{\:d}&									% Retroflex
+            c & \textbardotlessj &														% Palatal
+            \circled{k} & \circled{g} &													% Velar
+            q & \ipa{\;G} &										% Uvular
+            & \BlankCell        &								% Pharyngeal
+            \ipa{P}& \BlankCell         \\								% Glottal
+
+        \hline Nasal & 							% Nasal
+            & \circled{m} &													% Bilabial
+            & \ipa{M} &											% Labiodental
+            \multicolumn{3}{|r}{}&								% Dental
+            \multicolumn{3}{l|}{\circled{n}}&							% Alveolar
+                                                                        % Post-alveolar
+            & \ipa{\:n} &														% Retroflex
+            & \textltailn &														% Palatal
+            & \circled{\ipa{N}} &														% Velar
+            & N &														% Uvular
+            \BlankCell        & \BlankCell        &		% Pharyngeal
+            \BlankCell        & \BlankCell         \\		% Glottal
+
+        \hline Trill &  								% Trill
+            & \ipa{\;B}&											% Bilabial
+            & &														% Labiodental
+            \multicolumn{3}{|r}{}&								% Dental
+            \multicolumn{3}{l|}{\circled{r}}&								% Alveolar
+                                                                        % Post-alveolar
+            & &														% Retroflex
+            & &														% Palatal
+            \BlankCell        & \BlankCell        &		% Velar
+            & R&											% Uvular
+            & &														% Pharyngeal
+            \BlankCell        & \BlankCell         \\		% Glottal
+
+        \hline Tap/Flap &  						% Tap /Flap
+            & &													% Bilabial
+            & &														% Labiodental
+            \multicolumn{3}{|r}{} &					% Dental
+            \multicolumn{3}{l|}{\ipa{R}} &					% Alveolar
+                                                                        % Post-alveolar
+            & \ipa{\:r} &														% Retroflex
+            & &														% Palatal
+            \BlankCell        & \BlankCell        &		% Velar
+            & &														% Uvular
+            & &														% Pharyngeal
+            \BlankCell        & \BlankCell         \\		% Glottal
+
+        \hline Fricative & 						% Fricative
+            \ipa{F} & \ipa{B} &									% Bilabial
+            \circled{f} & \circled{v} &													% Labiodental
+            \ipa{T} & \ipa{D} &									% Dental
+            \circled{s} & \circled{z} &													% Alveolar
+            \circled{\ipa{S}} & \circled{\ipa{Z}} &									% Post-alveolar
+            \ipa{\:s} & \ipa{\:z} &								% Retroflex
+            \ipa{\c{c}} & \ipa{J} &								% Palatal
+            \circled{x} & \ipa{G} &											% Velar
+            \ipa{X} & \ipa{K} &									% Uvular
+            \textcrh & \ipa{Q} &								% Pharyngeal
+            h & \texthth \\										% Glottal
+
+        \hline Lat. Fricative  & 					% Lat. Fricative
+            \BlankCell        & \BlankCell        &		% Bilabial
+            \BlankCell        & \BlankCell        &		% Labiodental
+            \multicolumn{3}{|r}{\textbeltl} &				% Dental
+            \multicolumn{3}{l|}{\textlyoghlig} &			% Alveolar
+                                                                        % Post-alveolar
+            & &														% Retroflex
+            & &														% Palatal
+            & &														% Velar
+            & &														% Uvular
+            \BlankCell        & \BlankCell        			% Pharyngeal
+            & \BlankCell        & \BlankCell         \\   % Glottal
+
+        \hline Aprox. & 							% Approx.
+            & &														% Bilabial
+            & \ipa{V} &											% Labiodental
+            \multicolumn{3}{|r}{}&								% Dental
+            \multicolumn{3}{l|}{\ipa{\*r}} &					% Alveolar
+                                                                        % Post-alveolar
+            & \ipa{\:R} &											% Retroflex
+            & j &														% Palatal
+            & \textturnmrleg &									% Velar
+            & &														% Uvular
+            & &														% Pharyngeal
+            \BlankCell        & \BlankCell         \\		% Glottal
+
+        \hline Lat. Approx & 					% Lat. Approx
+            \BlankCell        & \BlankCell        &		% Bilabial
+            \BlankCell        & \BlankCell        &		% Labiodental
+            \multicolumn{3}{|r}{}&								% Dental
+            \multicolumn{3}{l|}{\circled{l}}&								% Alveolar
+                                                                        % Post-alveolar
+            & \textipa{\:l} &											% Retroflex
+            & \textipa{L} &												% Palatal
+            & \circled{L} &											% Velar
+            & &														% Uvular
+            \BlankCell        & \BlankCell        &		% Pharyngeal
+            \BlankCell        & \BlankCell         \\		% Glottal
+        \hline
+    \end{tabular}
+}%scalebox
+\captionof{table}{Consonants IPA}\label{tab:ipa1}
+\end{center}
+
+
+\begin{center}
+\begin{tabular}
+
+		\begin{vowel}
+			%    \putcvowel[l]{i}{1}
+    		\putvowel[l]{\circled{i}}{0pt}{0pt}
+   			\putcvowel[r]{y}{1}
+   			\putcvowel[l]{\circled{e}}{2}
+   			\putcvowel[r]{\o}{2}
+   			\putcvowel[l]{\circled{\textepsilon}}{3}
+  			\putcvowel[r]{\oe}{3}
+    		\putcvowel[l]{\circled{a}}{4}
+    		\putcvowel[r]{\textscoelig}{4}
+   			\putcvowel[l]{\textscripta}{5}
+    		\putcvowel[r]{\textturnscripta}{5}
+    		\putcvowel[l]{\textturnv}{6}
+    		\putcvowel[r]{\circled{\textopeno}}{6}
+    		\putcvowel[l]{\textramshorns}{7}
+    		\putcvowel[r]{\circled{o}}{7}
+    		\putcvowel[l]{\textturnm}{8}
+    		\putcvowel[r]{\circled{u}}{8}
+    		\putcvowel[l]{\textbari}{9}
+    		\putcvowel[r]{\textbaru}{9}
+    		\putcvowel[l]{\textreve}{10}
+    		\putcvowel[r]{\textbaro}{10}
+    		\putcvowel{\textschwa}{11}
+    		\putcvowel[l]{\textrevepsilon}{12}
+    		\putcvowel[r]{\textcloserevepsilon}{12}
+    		\putcvowel{\textsci\ \textscy}{13}
+    		\putcvowel{\textupsilon}{14}
+    		\putcvowel{\circled{\textturna}}{15}
+    		\putcvowel{\ae}{16}
+		\end{vowel}
+	
+\captionof{table}{Vowels IPA}
+\label{tab:ipa2}
+\end{tabular}
+\end{center} 
+The purpose of the IPA is to map and characterize all the sounds of human languages. In this way, each language takes advantage of only a subset of the IPA. The phones present in Portuguese-Brazilian are circulated. Taking into account only the subset of BP phones, and also keeping in mind that the phonetic alphabet symbols need to be transformed into ASCII code to be interpreted, it makes sense to build a new table adapted to the problem in question. The result of this adaptation can be seen in Tables \ref{tab:new_rep} and \ref{tab:new_vocals}. In these new tables, in addition to the exclusion of some points and modes of articulation (motivated by the very nature of BP), an alternative transcription key is also presented that includes only characters belonging to the ASCII code. With regard to the vowel table (\ref{tab:new_vocals}), the rounding dimension was dispensed since there was no longer any need for this markup as this information would be redundant due to the fact that all front vowels are rounded in Brazilian Portuguese and no back vowel is.
+
+\begin{center}
+\scalebox{0.9}{
+    \begin{tabular}{|l|cc|cc|cc|cc|cc|}
+        \hline & 
+            \multicolumn{2}{|c|}{\footnotesize{Bilabial}} &					% Bilabial
+            \multicolumn{2}{|c|}{\footnotesize{Lab. dent.}} & 			% Labiodental
+            \multicolumn{2}{|c|}{\footnotesize{Alveolar}} & 				% Alveolar
+            \multicolumn{2}{|c|}{\footnotesize{P-alveo.}} & 		% Post-alveolar
+
+            \multicolumn{2}{|c|}{\footnotesize{Velar}} & 					% Velar  \\				
+
+        \hline Plosive &  							% Plosive
+            p & b &	% Bilabial
+            &&	% Labiodental
+            t & d	% Alveolar
+            & &% Post-alveolar
+            & k & g 										         \\								
+
+        \hline Nasal & 							% Nasal
+            & m 	% Bilabial
+            &  &  & % Labiodental
+            & n 	% Alveolar
+            & & % Post-alveolar
+            & & N \\	% Velar
+                     	
+
+        \hline Tap/Flap &  						% Tap /Flap
+            &													% Bilabial
+            & &														% Labiodental
+           && r &					% Alveolar
+            &&                 % Post-alveolar
+
+            \BlankCell        & &        	% Vela
+
+        \hline Fricative & 						% Fricative
+            &  &									% Bilabial
+            f & v &													% Labiodental
+            s & z &													% Alveolar
+            x & j &									% Post-alveolar
+            h  & \\										
+
+        \hline Lat. appr. & 					% Lat. Approx
+            \BlankCell        & \BlankCell        &		% Bilabial
+            \BlankCell        & \BlankCell        &		% Labiodental
+
+           & l &							% Alveolar
+                                                      &&                  % Post-alveolar
+  
+             & L  	
+             &% Velar
+         
+        \hline
+    \end{tabular}
+}%scalebox
+\captionof{table}{Consonants in the new representation}\label{tab:new_rep}
+\end{center}
+
+\begin{center}
+\begin{table}[H]
+\begin{center}
+    \begin{tabular}{lll}
+        \hline
+         & Front & Back \\
+         \hline
+        Close & i & u \\
+        \hline
+        Close-Mid & e & o \\
+        \hline
+        Open-Mid & E & O \\
+        \hline
+        Open & a &  \\
+        \hline
+        Nasal & A (ã) &\\ & 3 ($\tilde{e}$) &\\ 
+        \hline
+    \end{tabular}
+\end{center}
+\caption{Vowels in the new representation}
+\label{tab:new_vocals}
+\end{table}
+\end{center}
+
+  Table \ref{tab:chave} displays the proposed transcription key using the phonetic tables created and Table \ref{tab:transc} displays some examples of possible transcriptions. \footnot{In order to facilitate pre-processing, some phonetic transcriptions were represented by the same symbol, such as: t \ipa{S} et $\rightarrow$ t; u, w and \textupsilon $ \rightarrow $ u.} 
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{lc}
+\textbf{Phone (AFI) + Practical Example} & \multicolumn{1}{l}{\textbf{Proposed Transcript}} \\ \hline
+
+\textbf{{[}p{]}} - \textbf{p}arar & p \\
+\textbf{{[}b{]}} - \textbf{b}otar & b \\
+\textbf{{[}t{]}} - \textbf{t}ocar & t \\
+\textbf{{[}d{]}} - \textbf{d}ançar & d \\
+\textbf{{[}k{]}} - \textbf{c}asar & k \\
+\textbf{{[}g{]}} - \textbf{g}ostar & g \\
+\textbf{{[}f{]}} - \textbf{f}ugir & f \\
+\textbf{{[}v{]}} - \textbf{v}oltar & v \\
+\textbf{{[}s{]}} - \textbf{s}oltar & s \\
+\textbf{{[}z{]}} - pre\textbf{s}enciar & z \\
+\textbf{{[}\ipa{S}{]}} - \textbf{ch}amar & x \\
+\textbf{{[}\ipa{Z}{]}} - \textbf{j}antar & j \\
+\textbf{{[}t\ipa{S}{]}} - sen\textbf{t}ir & t \\
+\textbf{{[}d\ipa{Z}{]}} - \textbf{d}izer & d \\
+\textbf{{[}h{]}} - e\textbf{rr}ar & h \\
+\textbf{{[}\ipa{\:r}{]}} - enca\textbf{r}ar & r \\
+\textbf{{[}l{]}} - pu\textbf{l}ar & l \\
+\textbf{{[}\textipa{L}{]}} - espa\textbf{lh}ar & L \\
+\textbf{{[}m{]}} - \textbf{m}orar & m \\
+\textbf{{[}n{]} }- \textbf{n}adar & n \\
+\textbf{{[}\ipa{N}{]}} - so\textbf{nh}ar & N\\
+\textbf{{[}a{]}} - p\textbf{a}rar & a \\
+\textbf{{[}e{]}} - l\textbf{e}r & e \\
+\textbf{{[}\textepsilon{]}} - esp\textbf{e}ro & E \\
+\textbf{{[}i{]}} - r\textbf{i}r & i \\
+\textbf{{[}o{]}} - pr\textbf{o}por & o \\
+\textbf{{[}\textopeno{]} }- col\textbf{o}co & O \\
+\textbf{{[}u{]}} - c\textbf{u}rtir & u \\
+\textbf{{[}\~e{]}} - \textbf{e}ntreter & 3 \\
+\textbf{{[}ã{]}} - pl\textbf{a}ntar & A \\
+\textbf{{[}\~o{]}} - comp\textbf{o}nho & o \\
+\textbf{{[}\textupsilon{]}} - cas\textbf{o} & u \\
+\textbf{{[}j{]}} - sa\textbf{i}o & i \\
+\textbf{{[}w{]}} - vo\textbf{l}to & u
+\end{tabular}
+\end{center}
+\caption{Dictionary for Proposed Transcripts}
+\label{tab:chave}
+\end{table}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{cc}
+\hline
+\textbf{Verb} & \textbf{Transcription} \\ \hline
+ressentir & hes3ntir \\
+paro & paru \\
+possuo & posuu \\
+olha & oLa \\
+sacudir & sakudir \\
+voltar & voutar \\ \hline
+\end{tabular}
+\end{center}
+\caption{Transcription Examples}
+\label{tab:transc}
+\end{table}
+
+
+
+
+
+
+\subsection{The Encoder-Decoder inputs}
+\label{sec:inputs}
+
+After the construction of the corpus, the transcribed verbs had their respective heads associated with the phonetic traits that compose them, the same traits that originated the Tables \ref{tab:new_rep} and \ref{tab:new_vocals}. Table \ref{tab:pOsu} presents an example of this process for the verb "poder" ("can") - "\textit{pOsu}" (I can).
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{lll}
+Phone & Phonetic Features &  \\ \cline{1-2}
+p & bilabial, plosive, unvoiced &  \\
+O & Open-Mid, back &  \\
+s & fricative, alveolar, unvoiced &  \\
+u & close, back & 
+\end{tabular}
+\end{center}
+\caption{Phonetic features for the verb “Posso” (\textit{can})}
+\label{tab:pOsu}
+\end{table}
+
+Note in the table \ref{tab:pOsu} that it is possible to characterize each phone with three or two phonetic features. However, to build the vector representation for the model, we need to consider in advance all possible dimensions of the model, since each dimension will represent a single phonetic feature.
+
+For the construction of the vectors, we will use \textit{dictionaries}. In computing, a dictionary is a data storage structure that associates a key with a value. This structure has a mutually exclusive set of keys, each associated with a value. Thus, when querying a dictionary with a key value, the structure returns the associated value in response. In total, 20 dimensions are required to represent a headset. There are 18 to represent the features of the constructed phonetic tables (\ref{tab:new_rep} and \ref{tab:new_vocals}): Plosive, Nasal, Tepe, Fricative, Lateral, Bilabial, Labio-Dental, Alveolar, Post-Alveolar Approximant , Velar, Glottal, Close, close-mid, Open-mid, Open, Front, Back; and another two to represent the beginning and end of the verb. The need for these last two dimensions will become clearer after Cap. 3.
+
+The phones are then characterized by the presence (1) and absence (0) of the mentioned features. Thus, the built dictionary has phones on the key values and a list of 0's and 1's to represent the presence and absence of phonetic features. As seen, according to the phonetic tables developed, each phone can be described by three or two phonetic traits, so that each vector will have only three or two values marked as \textbf{1} 's. The representation of the beginning and end of the verb will be exceptions, with only a presence mark in the vector in the respective dimension.
+
+Table \ref{tab:coding_example} shows as an example a comparison between two similar phones (\textbf{p} and \textbf{b}) that are distinguished only by the phonetic "voiced" trait. The result is a vector representation that also carries this notion of proximity between the phones. The beginning of the verb (that is, before the first phone) is represented by a vector that marks 0 in all phonetic lines and 1 to represent the beginning (the ending can be understood in a similar way). In addition, it is worth noting that the proposed phonetic tables (\ref{tab:new_rep} and \ref{tab:new_vocals}) add up to 28 possible phones. As we also have the start and end markings, we will have a total of 30 different vector representations available.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{lll}
+\textbf{ Feature} & \textbf{p} &\textbf{ b} \\
+ \toprule
+plosive & 1 & 1 \\
+nasal & 0 & 0 \\
+tap & 0 & 0 \\
+fricative & 0 & 0 \\
+l-approx & 0 & 0 \\
+bilabial & 1 & 1 \\
+labiodental & 0 & 0 \\
+alveolar & 0 & 0 \\
+p-alveolar & 0 & 0 \\
+velar & 0 & 0 \\
+glottal & 0 & 0 \\
+voiced & 0 & 1 \\
+close & 0 & 0 \\
+close-mid & 0 & 0 \\
+open-mid & 0 & 0 \\
+open & 0 & 0 \\
+front & 0 & 0 \\
+back & 0 & 0 \\
+<beg> & 0 & 0 \\
+<eos> & 0 & 0
+\end{tabular}
+\end{center}
+\caption{Codification example of phones}
+\label{tab:coding_example}
+\end{table}
+
+Putting together all the steps outlined, the complete process of transformation of the inputs can be summarized to:
+
+\begin{enumerate}
+     \item Addition of symbols to mark the beginning and end of verbs.
+     \item Division of verbs in phones, following the proposed transcription key.
+     \item Transformation of the phones into \textit{arrays} of 0's and 1's, following the developed dictionary of phones.
+\end{enumerate}
+
+In short, we will have that the vectors of \textit{input} are therefore binary vectors of 20 dimensions, containing from one to three dimensions occupied by \textbf{1} 's and the rest filled with zeros. The complete representation of the entire verb, in turn, will consist of the consecutive concatenation of these vectors.
+
+
+
+
+
+

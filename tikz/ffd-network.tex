@@ -1,0 +1,89 @@
+\input{definitions/colors}
+\input{definitions/styles}
+\begin{figure}[ht!]
+\centering
+
+\scalebox{1.0}{
+\begin{tikzpicture}[auto]
+
+% operations =========
+% phon features 1
+\node[textonly] (1pho1) {plosive-vogal-plosive};
+
+% Legenda
+\node[textonly, above=10pt of 1pho1] (leg1) {Input Units};
+
+
+% FNN input
+\node[normal, right=5pt of 1pho1] (x1) {};
+\node[normal, below=25pt of x1] (x2) {};
+\node[normal, below=25pt of x2] (x3) {};
+\node[normal, below=25pt of x3] (x4) {};
+\node[normal, below=25pt of x4] (x5) {};
+\node[normal, below=25pt of x5] (x6) {};
+\node[text, below=10pt of x6] (nada) {};
+
+% FNN output
+\node[normal, right=45pt of x1] (y1) {};
+\node[normal, right=45pt of x2] (y2) {};
+\node[normal, right=45pt of x3] (y3) {};
+\node[normal, right=45pt of x4] (y4) {};
+\node[normal, right=45pt of x5] (y5) {};
+\node[normal, right=45pt of x6] (y6) {};
+
+% phon features 2
+\node[textonly, right=5pt of y1] (2pho1) {plosive-vowel-plosive};
+\node[textonly, above=10pt of 2pho1] (leg2) {Output Units};
+\node[textonly, left=25pt of x2] (1pho2) {front-nasal-back};
+\node[textonly, right=25pt of y2] (2pho2) {front-nasal-back};
+\node[textonly, left=25pt of x3] (3pho1) {...};
+\node[textonly, right=25pt of y3] (1pho3) {...};
+\node[textonly, left=25pt of x4] (4pho1) {nasal-cont-plosive};
+\node[textonly, right=25pt of y4] (1pho4) {nasal-cont-plosive};
+\node[textonly, left=25pt of x5] (5pho1) {middle-fric-low};
+\node[textonly, right=25pt of y5] (1pho5) {middle-fric-low};
+\node[textonly, left=25pt of x6] (6pho1) {vowel-fricative-\#};
+\node[textonly, right=25pt of y6] (1pho6) {vowel-fric-\#};
+% edges FNN
+\path[nedge] (x1) -- (y1);
+\path[nedge] (x1) -- (y2);
+\path[nedge] (x1) -- (y3);
+\path[nedge] (x1) -- (y4);
+\path[nedge] (x1) -- (y5);
+\path[nedge] (x1) -- (y6);
+\path[nedge] (x2) -- (y1);
+\path[nedge] (x2) -- (y2);
+\path[nedge] (x2) -- (y3);
+\path[nedge] (x2) -- (y4);
+\path[nedge] (x2) -- (y5);
+\path[nedge] (x2) -- (y6);
+\path[nedge] (x3) -- (y1);
+\path[nedge] (x3) -- (y2);
+\path[nedge] (x3) -- (y3);
+\path[nedge] (x3) -- (y4);
+\path[nedge] (x3) -- (y5);
+\path[nedge] (x3) -- (y6);
+\path[nedge] (x4) -- (y1);
+\path[nedge] (x4) -- (y2);
+\path[nedge] (x4) -- (y3);
+\path[nedge] (x4) -- (y4);
+\path[nedge] (x4) -- (y5);
+\path[nedge] (x4) -- (y6);
+\path[nedge] (x5) -- (y1);
+\path[nedge] (x5) -- (y2);
+\path[nedge] (x5) -- (y3);
+\path[nedge] (x5) -- (y4);
+\path[nedge] (x5) -- (y5);
+\path[nedge] (x5) -- (y6);
+\path[nedge] (x6) -- (y1);
+\path[nedge] (x6) -- (y2);
+\path[nedge] (x6) -- (y3);
+\path[nedge] (x6) -- (y4);
+\path[nedge] (x6) -- (y5);
+\path[nedge] (x6) -- (y6);
+
+
+\end{tikzpicture}
+}\caption{Model Scheme proposed by researchers Rumelhart and McClelland} 
+\label{fig:esquemafdd}
+\end{figure}

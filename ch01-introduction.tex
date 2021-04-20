@@ -1,0 +1,209 @@
+\chapter{Learning Irregular Verbs}
+\label{ch:01}
+
+The first part of this chapter will be dedicated to a presentation regarding the origin of the discussion about the inflectional learning process of irregular verbs. Thus, we will build an overview of the problem and present the main hypotheses and research involved. Then, we will discuss the motivations that led to the production of this research. In this sense, we will see that, on the one hand, there is a linguistic interest, motivated by a greater complexity of the Portuguese language compared to English. On the other hand, we will also see that there is a computational interest, motivated by the emergence of new modeling resources. Finally, we will see a section aimed at delimiting the scope of the research.
+
+\section{Context}
+In the field of Language Acquisition, the problem regarding the inflection process of irregular verbs in the English language is certainly among one of the most controversial topics of debate in Linguistics (\cite{chomsky:1968}, \cite{Pinker:1999}, \cite{Pinker:1988}, \cite{Albright2003RulesVA}, \cite{kirov:2018}). The heart of the debate is the exact characterization of the mechanisms that enable a speaker to be able to relate a verb in its non-inflected form (\textit{walk}, for example) to its inflected form in \textit{Simple Past} (\textit{walked}).
+
+Past tense verbs in English can be subdivided into a variety of families. A first group would be the set of \textit{regular verbs}, whose form corresponds to the application of the rule \textit{\text{root} + ed} (as in the example seen from the verb \textit{to walk}).
+Among the irregular verbs, these can be considered suppletive, that is, they have a unique inflection process and no apparent rule, such as \textit{go} $ \rightarrow $ \textit{went}, or they can conglomerate following phonetic patterns (\cite{Nelson:2010}):
+
+\begin{enumerate}
+    \item blow – blew, grow – grew, know – knew, throw – threw
+    \item bear – bore, swear – swore, tear – tore, wear – wore
+    \item drink – drank, shrink – shrank, sink – sank, stink – stank 
+\end{enumerate}
+
+One could think that the learning of such patterns would depend on a case by case memorization. However, \cite{Bybee:1983} shows a psycholinguistic study in which individuals are presented with several invented verbs (hypothetically in a non-inflected form). The research revealed that, instead of systematically applying the regular rule (verb + \textit{ed}), individuals showed tendencies to allocate some verbs in some irregular subgroups. For example, for the invented verb “\textit{spling}”, most individuals chose the form “\textit{splang}” or “\textit{splung}”. This example contradicts the idea that speakers could be simply reproducing memorized forms and suggests that they are actively identifying patterns. In addition, they have a natural intuition about the appropriateness of allocating a verb to one group of verbs or another.
+
+From the given example, it is reasonable to think that the motivation behind such trends occurs from the similarities between the phonetic units of the invented verbs and the real verbs that already have an irregular character inflection. However, the circumstances that lead to the acquisition of this linguistic \textit{intuition} are undetermined. On the one hand, it makes sense to say that for a human being to be able to be introduced into the world of speakers, it would require some inherited capabilities, otherwise the learning process would not be possible. In contrast, studies show that children deprived of contact with a speaking society are permanently unable to fully master the grammar of a language (\cite{Pinker:languageinstinct}), which leads us to conclude that children's experience with society, as well as their own genetic pre-dispositions are both partly responsible for the language development process. The difficulty, therefore, is in the attempt to quantify, delimit and point out the knowledge acquired from cultural contact, as well as the so-called \textit{inate} linguistic knowledge. It is, therefore, around this issue that the debate about the learning of irregular verbs in the English language begins.
+
+On one side of the debate, there is the theory of Generative Phonology by Chomsky and Halle (\citeyear{chomsky:1968}). In this theory, individuals would be carriers of a language acquisition device (\textit{LAD} ) responsible for \textit{formulating} and \textit{manipulating} abstract phonological structures in a system of rules. In a simplified way, the theory proposes that the speaker is able to intuitively identify and formulate rules to account for the learning of irregular forms of the language. An example of this is the family of verbs ending in "-ind".
+
+\begin{center}
+bind – bound, find – found, grind – ground, wind – wound
+\end{center}
+
+We can see that, in a simplified way, a rule can be proposed as:
+
+\begin{center}
+a\textsci $\rightarrow$ a\textupsilon / \textbf{X}  \_\_nd]+past
+\end{center}
+
+The proposed rule suggests that the segment [a \textsci] becomes [a \textupsilon] when followed by [nd] and inflected to the past. The symbol \_ \_ represents the place where such a transformation occurs and \textbf{X} represents an arbitrary phonological unit.
+
+In other words, it can be said that the knowledge said \textit{innate} defended by Chomsky and Halle refers to a certain cognitive capacity for formulating rules from the identification of some fundamental elements (such as the elements pointed out in the proposed rule). Such a structure would allow speakers to build generalizations and, eventually, abstract the phonological rules of their language. \\
+
+On the other side of the debate, the researchers \cite{rumelhart:1986} confront the previous theory by arguing that behaviors of a regulated character can be reproduced by mechanisms that do not depend on any symbolic manipulation. Instead, the researchers suggest that the mechanisms involved in the verbal inflection process can be constructed in such a way that its performance can be described through rules, but that the rules themselves are not explicitly represented in any part of the process. To support this idea, \cite{rumelhart:1986} present a computational model based on associative patterns that do not use constructions with rules of this type. Subsequently, the model built was fundamental for the emergence of a new school within the cognitive sciences: connectionism. \\
+
+\input{tikz/ffd-network}
+
+
+The model was created by analogy to the structure in which neurons in the brain relate. It is basically composed of an artificial network of nodes interconnected in parallel (Fig. \ref{fig:esquemafdd}).
+
+The first layer of nodes in the model is responsible for receiving the input data, which are the data regarding the distinctive phonetic features that characterize the sounds of a verb in its root form. Phonetic features can be characterized as distinctive properties of phonic units (\cite{paraconhecer:2015}). Such properties can be based on acoustic, articulatory or perceptual criteria. In the figure, each node is shown next to a sequence of three features. The first node, for example, refers to the sequence \textbf{plosive-vowel-plosive}. In this case, \textit{plosive} indicates a common property among some consonants, related to the interruption of the air flow (as in the phone [k], for example). In the figure we still have \textbf{fric} for fricatives, \textbf{vowel} for vowels, \textbf{nasal} for nasality, places of execution (\textbf{front} and \textbf{back}), tongue features (\textbf{middle}, \textbf {low}), among others. Still on the \textit{input} layer, it is possible to observe that each node is represented by a triad of phonetic features. This was the solution provided by the authors to perform the mapping between the features of the verbs in their root form to their \textit{Past Simple}. The \textit{inputs} are structured in this way to overcome the difficulty of inserting data of a sequential nature and of variable size (as is the case of a verb - composed of a sequence of sounds). Each triad is an association of three features, each referring to a phone. For example, for the verb \textit{came} (transcribed in phonetic form by the authors as \textit{/kAm/}), each phone has multiple features. The phone [\textit{k}], for example, is an plosive, voiceless and "back" consonant. Subsequent phones are also composed by their respective phonetic features, in such a way that we can represent the verb as a sequence of lists of phonetic features (Table \ref{tab:trigrams}). The topic regarding the phonetic features used in this research, as well as the entire preprocessing scheme used by the authors \cite{rumelhart:1986} will be discussed in greater depth in Chap. \ref{ch:02}.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ccc}
+k                    & A                    & m                    \\ \hline
+voiceless                & long                & nasal                \\
+interrupted         & vowel               & interrupted         \\
+back            & low                & front            \\
+consonant           & front            & consonant            \\
+\multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{}
+\end{tabular}
+\caption{Trigrams of Phonetic Features Used as  \textit{Inputs} to Rumelhart and McClelland's model}
+\label{tab:trigrams}
+\end{center}
+\end{table}
+
+Returning to Fig.\ref{fig:esquemafdd}, we see a network of connections after the \textit{input} layer. Each connection, in turn, has a \textit{weight}. These weights will act as a kind of \textit{input} filter, making weights with higher values pass the information on with more effect (or strength), and smaller weights with less. The second layer of nodules in Fig. \ref{fig:esquemafdd} is a response layer (known as a \textit{output} layer) that aims to return data regarding the features that characterize the sounds of the same verb provided in \textit{input}, but in \textit{Simple Past}.
+
+During the learning process of the model, the output data from the \textit{output} layer must then be compared to the correct form of the verb in the past tense, through a kind of template, known as \textit{target} (Fig. \ref{fig:gabarito}). Having made this comparison, it is possible to change the network of connections between \textit{input} and \textit{output} layers in order to reinforce (or weaken) their weights to achieve the proposed learning. Before the first comparison, the network is initialized with random weights. As the number of comparisons increases, the tendency is for the weights to be gradually calibrated in order for the model to reach its objective, which in this case, is to learn the inflection patterns of the verbs.
+
+\input{tikz/target.tex}
+
+To conduct the training, \cite{rumelhart:1986} fed 420 verbs into the model repeatedly (200 times each, 84,000 insertions in total). After training, the model was able to correctly reconstruct all of their irregular forms. In addition, in a new group with 86 unknown verbs, it hit about 2/3 of the set. Among the new irregular verbs, it made some interesting errors of \textit{overregularization} (such as \textit{catched} (instead of \textit{caught}) and  \textit{digged} (instead of \textit{dug})). These errors were observed in 11 of the 14 irregular verbs tested (\cite{pinker:1993}).
+
+In addition to these results, \cite{rumelhart:1986} report that the model's learning process presents an interesting phenomenon, with a performance similar to behaviors observed in children during an acquisition phase: the U-Shaped Development Curve, \cite{marcus:1992}). The U-Shaped Development curve basically refers to a learning process that takes place in three stages: \\
+
+(i) first, children can correctly reproduce the expected irregular inflection of verbs  (\textit{come}$\rightarrow$\textit{came});
+
+(ii) next, they go through a process of \textit{overgeneralization} (in which they produce shapes like \textit{comed}) ;
+
+(iii) finally, they start to correctly reproduce both regular and irregular verbs. \\
+
+
+\cite{rumelhart:1986} describe how it was possible to observe such behavior in their model.
+In the initial phase of the training process, the model was fed with a small amount of verbs, such as: \textit{come}, \textit{get}, \textit{give}, \textit {look}, \textit{take} , \textit{go}, \textit {have}, \textit {live} and \textit{feel}. The model's performance was compatible with the first stage of the curve, that is, for these verbs it was able to correctly identify the corresponding form in \textit{Simple Past}. In a second step, the model was fed with a much larger amount of verbs. At this stage, it is possible to verify that the model is undergoing a process of systematic regularization of verbs. It produced results like: \textit{breaked}, \textit{comed}, \textit{gived}; and also combinations between regular and irregular patterns (e.g. \textit{gaved}).
+After a series of many repeated insertions, the model was finally able to respond correctly to a larger number of verbs, as in the last stage of the natural learning process.
+
+The results presented by \cite{rumelhart:1986} had a considerable impact on the scientific community at the time. Many researchers saw the new model as a complete paradigm shift, not only in linguistics, but also as a new way of studying learning in general (\cite{Schneider1987}).
+
+Despite this, \cite{Pinker:1988} continue the debate by pointing out a number of pertinent issues that the model has failed to explain. First, as the model receives only a phonetic representation of the verb as \textit{input}, it is unable to generate two different responses for verbs with identical sound (for example \textit{break} $ \rightarrow $ \textit{broke} and \textit{brake} $ \rightarrow $ \textit{braked}). To make these predictions correctly, the model would require an additional module to distinguish between the two words, but then it could not be considered as a purely associative model anymore. Second, the model is extremely dependent on the patterns observed during training, having a low capacity for generalizations. \cite{Pinker:1999} comments that the model displayed no response when fed with the verbs \textit{jump}, \textit{pump}, \textit {warm, trail} and \textit{glare} (which have a unusual sound). In addition, the model presented some completely distorted results, such as: \textit {squat - squakt, tour - toureder} and \textit{mail - membled}; unacceptable associations for any native speaker.
+
+Regarding the observed learning pattern (the U-Shaped Development Curve), \cite{Pinker:1999} explains that this behavior was caused according to the way in which the verbs were inserted into the model during training: Rumelhart \& McClelland performed the training in parts and controlling the amount of repetitions of each batch of verbs. In the first part of the training, they selected some high frequency verbs in the English language (many of them irregular), reproducing stage (i) of the curve. Then, they trained the model with these verbs, reintroducing them multiple times until the model managed to achieve reasonable performance on those verbs. Next, they introduced a larger number of verbs, these being less frequent than the previous ones, but mostly regular. Thus, the model began to adjust to apply the regular rule and thus it was possible to observe stages (ii) and (iii) of the curve. Still, according to  \cite{pluket:1991}, the stages of development (i), (ii) and (iii) can be considered part of a behavior \textit {macro U-shape}, but in the process of natural learning, it is still possible to observe the occurrence of a behavior \textit{micro U-shape}. \cite{pluket:1991} point out that the reproduction of irregular verbs in spontaneous speech by apprentice children varies considerably between correct inflections and \textit{over-regularized}. They also note that these oscillations occur in different proportions for each verb and that children rarely “\textit{irregularize}” regular verbs (like \textit{ping} $ \rightarrow $ \textit{pang}), and rarely mix an irregular shape with a regular (a fact that occurred while learning the model with \textit{gaved}).
+
+To conclude, \cite{Pinker:1988} presents the formulation of a new hypothesis for such a question: a hybrid theory in which generative phonology would apply to the regular inflection process and an associative mechanism would apply to the irregular inflection process. The researchers propose that regular forms are computed from a mechanism that should abstract the stem of the verb and combine it with the suffix –ed. Such a mechanism can be applied to any word, in a process independent of memory. Irregular forms, in turn, go through a different process: irregular verbs must go through a memorization process, with not only the association between one verbal form and another, but also between properties (phonetic features, rhyme, radical, nucleus, etc.), similar to what was proposed by Rumelhart and McClelland.
+
+\section{Motivation}
+\label{sec:motivation}
+
+Once a contextualization about the problem has already been presented, we will now focus on the questions that motivated the development of this research. Thus, this section will be divided into two parts: (i) motivation in the field of General Linguistics, and (ii) motivation in the field of Computer Science.
+
+\subsection{Motivation in the field of General Linguistics}
+\label{sec:aprendizado_port}
+ 
+The verbal morphology of the English language is quite simple if compared to Portuguese. First, Portuguese verbs are divided into three conjugation classes, each of which is defined from a \textit{thematic vowel} (\textit{/a/}, \textit{/e/} and \textit{/i/}). Given a verb in its infinitive form, for example \textit{Amar - ("to love")}, the thematic vowel (TV) is the vowel that is found between the verb lexical morpheme (the root) and the infinitive ending \textit{r}.
+
+\begin{align*}
+    \text{Am + a + r}\\
+    \text{Root + TV + r} 
+\end{align*}
+
+With this, the three possible types of conjugation are: 1\aup{st} - ar (amar (to love), brigar (to fight)), 2\aup{nd} - er (beber (to drink), comer (to eat) and 3\aup{rd} - ir (rir (to laugh), descobrir (to discover)). In the English language, this distinction does not exist.
+
+A child in the process of language acquisition in the Brazilian Portuguese system goes through many challenges. Part of the process is precisely to understand the relationship between the thematic vowel and the possible regular conjugations. In this process, it is not uncommon to observe the appearance of conjugation exchanges. \cite{wuerges:2014} presents linguistic data produced by children with several of examples. Some of these can be seen in Tab. \ref{tab:aquisicao}.
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{ccccc}
+Verb & Translation & Observed & Correct & Exchange   \\ \hline
+botar & \textit{to put} & “boti” & botei & 1\aup{a} with 2\aup{a} or 3\aup{a} \\
+comer & \textit{to eat} & “comei” & comi & 2\aup{a} with 1\aup{a} \\
+jantar & \textit{to have dinner} & “janti” & jantei & 1\aup{a} with 2\aup{a} or 3\aup{a}  \\ \hline
+
+\end{tabular}
+\caption{Examples of Exchanges in Verbal Conjugations During Verbal Acquisition}
+\label{tab:aquisicao}
+\end{center}
+\end{table}
+
+Irregular verbal forms are an additional difficulty in this process for children who speak Portuguese. \cite{wuerges:2014} also points out observed examples of \textit{regularization} of irregular verbs: “eu \textit{consego}” (regularization of the verb “conseguir” (to succeed)) and “eu \textit{podo}” (regularization of the verb “poder” (can)).
+
+A verb is said to be irregular if it presents changes in the stem (in relation to the stem of the infinitive form) and/or in the flexional suffix (in relation to the regular pattern imposed by each conjugation) (\cite{wuerges:2014}). Flexional suffixes (FS) are the segments added after the verb stem. They can be divided into two types: (i) mode-time suffix (MTS) and (ii) personal-number suffix (PNS). For the verb “gostávamos” (we liked), for example, the segment \textit{/gost/} is considered as the stem of the verb, \textit{/av/} as the suffix mode-time, which in this case simultaneously marks the indicative mode and past imperfect tense; and \textit{amos} as the personal-number suffix indicating first person plural (we).
+
+Following the proposed definition, it is necessary to reinforce that the interest of this study is in capturing irregularities in the phonetic level, therefore verbs such as: “gosto” $\rightarrow$ /g\textopeno st\textupsilon/ (i like)), “boto” $\rightarrow$ /b\textopeno t\textupsilon/ (i put) and “coloco” $\rightarrow$ /kol\textopeno k\textupsilon/ (i place), whose spelling presents the regular pattern, will be classified as irregular. This will happen due to the phonetic transformations that occur in speech and that are not captured in writing. In the case of “gosto”, for example, we see that the first vowel “/o/” actually has a / \textopeno/ sound. Thus, Table \ref{tab:irreg} displays some examples of the applied categorizations.
+
+\begin{center}
+\begin{table}[H]
+\centering
+\begin{tabular}{ccccc}
+\multicolumn{1}{l}{\textbf{Infinitive}} & \multicolumn{1}{l}{\textbf{Conjugated}} & \multicolumn{1}{l}{\textbf{Applied Category}} &
+\multicolumn{1}{l}{\textbf{Phonetic Transc.}} &
+\multicolumn{1}{l}{\textbf{Translation}}
+\\ \hline
+Falar & Falo & Regular & fal\textupsilon &(I) speak \\
+Gostar & Gosto & Irregular & g\textopeno st\textupsilon & (I) like \\
+Testar & Testo & Irregular & t\textepsilon st\textupsilon & (I) test \\
+Ansiar & Anseio & Irregular & ãse\ipa{Z}\textupsilon & (I) wish\\
+Pedir & Peço & Irregular & p\textepsilon s\textupsilon & (I) ask\\
+Mentir & Minto & Irregular & mint\textupsilon &(I) lie\\
+Por & Ponho & Irregular & poñ\textupsilon &(I) put
+\end{tabular}
+\caption{Examples of Verb Categories Regarding the Presence of Irregularities}
+\label{tab:irreg}
+\end{table}
+\end{center}
+
+An observation about the disposition of the irregularities present in Brazilian Portuguese (taking into account only first-person singular (present tense and indicative mode) allows us to observe some regularities (patterns) among the irregular verbs:\\
+\\
+Bobear – Bobeio, Bloquear – Bloqueio, Chatear – Chateio, Clarear – Clareio, Golpear – Golpeio\\
+\\
+Agredir – Agrido, Conseguir – Consigo, Inserir – Insiro, Perseguir – Persigo, Preferir – Prefiro, Proferir – Profiro, Repetir – Repito, Servir –  Sirvo, Vestir – Visto\\
+\\
+Cobrir – Cubro, Dormir – Durmo, Engolir – Engulo\\
+\\
+ Al[e]gar – Al[ε]go, C[e]gar – C[ε]go, Compl[e]tar – Compl[ε]to,  Col[e]tar – Col[ε]to, Entr[e]gar – Entr[ε]go, Pr[e]gar – Pr[ε]g,\\
+\\
+Ad[o]rar – Ad[\textopeno]ro, Ad[o]tar – Ad[\textopeno]to, B[o]tar – B[\textopeno]to, C[o]lar – C[\textopeno]lo, F[o]car – F[\textopeno]co, M[o]rar – M[\textopeno]ro, S[o]ltar – S[\textopeno]lto, S[o]lar – S[\textopeno]lo, T[o]car – T[\textopeno]co, M[o]strar – M[\textopeno]stro\\
+\\
+Mentir - Minto, Sentir - Sinto\\
+
+The patterns observed from the exposure of some irregular classes, allow, as in English, the proposition of formulas, or phonetic rules, that explain the inflections performed in each class. It is possible to notice, for example, that a verb from the same family of \textit{conseguir} follows the rule:
+
+\begin{center}
+e $\rightarrow$ i/\_C]ir 
+\end{center}
+
+The proposed rule indicates that /e/ becomes /i/ when in a third conjugation context (ir). In this case, C indicates any consonant.
+
+The patterns found suggest not only the possibility of elaborating rules, but also the possibility of developing networks capable of capturing such dependencies.
+
+\subsection{Motivation in the field of Computational Science}
+\label{sec:compmot}
+
+Since the presentation of the research by \cite{rumelhart:1986}, the associative model used by the authors has gone through several advances. In reality, this type of modeling today is called \textit{Artificial Neural Network} and has come to be used in a variety of computational tasks, such as image classification, text classification, automatic translation, conversational agents, among others.
+
+In recent years, computing power has increased a lot. The development of \textit{hardwares} makes it possible to perform many more computations today and with much more speed than in the 1980s. With this, more complex architectures could be explored and developed. As an example, it is possible to add intermediate layers between the layers of \textit{input} and \textit{output}. Networks built in this way make it possible for input information to be distributed over more connections and thereby enhance learning. This is because the type of architecture without intermediate layers can approximate only one type of function, the linear functions. By increasing the number of intermediate layers, it is possible to expand the universe of solutions for solving more complex problems (see \cite{Goodfellow-et-al-2016} for more detailed explanations of the intermediate layers). This type of modeling that follows a one-way flow (from \textit{input} to \textit{output}) is called \textit{Feedforward} (FFD). However, there are many types of architectures whose flows do not follow this configuration. In this context, a type of architecture that has become very well known is the \textit{convolutional} (\textit{Convolutional Neural Networks (CNN's)}) (widely used in the area of computer vision (\cite{Krizhevsky:2012}, for example). Regarding linguistic tasks, \textit{Recurrent Neural Networks (RNN's)} are widely used, since the architecture allows the insertion of sequential data (\cite{pengfei:2016} , for example) The theme of Neural Network models, especially RNR's architecture, will be discussed in more detail in Chapter 3.
+
+With regard to the question of learning irregular English verbs, a series of new experiments followed on from the criticisms of (\cite{Pinker:1988}). (\cite{pluket:1991}, (\citeyear{PLUNKETT:1993})) simplify the issue by considering only fixed-length verbs (3 syllables) and address the problem using an architecture with the addition of intermediate layers (\textit{Multi-Layered Perceptron - MLP}). Other works transformed the issue into a problem of \textit{classification}, so the model would no longer have the objective of finding a flexed form. Instead, they would have a finite and predetermined set of possible ways. \cite{Nakisa1996WhereDD}, for example, classify plurals of German nouns. \cite{plunkett:1997} attack the same problem, but for the Arabic language.
+
+\cite{wetermann:1997} present a model built to map non-inflected verbs from the German language to the participle form. The model presented is capable of handling data with sequences of varying sizes and uses an architecture based on RNN's. However, the model was built from a double route mechanism, so that irregular verbs passed through a specific memorization route and regular verbs through another route, with the application of the rule. Despite this, the performance of the model left something to be desired. Some different experiments were carried out, one of which consisted of training groups of verbs in isolation. For this, the regular verbs were in one group and the irregular verbs were divided into two others. In this case, the percentage of correctness of the model reached almost 100\% for the groups trained in isolation. However, when mixing the verbs in a single training, the percentage of correct responses stabilized around 60 to 70\%.
+
+As part of the construction of non-associative models, that is, based on rules, Albright, A. \& Hayes present the \textit{Minimal Generalization Learner (MGL)} model, whose implementation is very close to the theory proposed by \cite{Pinker:1988}. The MGL model is based on discovering and assigning weights to pre-established rules for irregular transformations. We will talk more about the results of this model in the results discussion section (Section 5.3).
+
+\subsection{State-of-the-Art Architecture}
+
+\cite{enc-dec:2014} e \cite{seq2seq:2014} present a new type of Neural Network architecture built to map two sequences of varying sizes. The new architecture, known as \textit{Encoder-Decoder}, or also \textit{Seq2Seq}, is recognized especially for its good performance in linguistic tasks, especially in the field of machine translation (\cite{Wu:2016}). This architecture consists of the concatenation of two RNN's. The first network, \textit{Encoder}, reads each symbol from an input string (for example, an English word) and generates an abstract representation of the word read in response. The second network, \textit{Decoder}, receives as input the representation returned by \textit{Encoder} and aims to produce another corresponding target sequence (in this case, a translation task, the word translated into another language). The architecture of the \textit{Encoder-Decoder} model will be covered in more detail in Chapter 5.
+
+In the task of learning irregular verbs, \cite{faruqui:2015} elaborates the question at the level of \textit{characters} (letters), that is, it does not use phonetic features such as \textit{inputs} in the \textit{Encoder- Decoder}. \cite{kann-schutze-2016-med} use morphological labels (participle markings, gerund, etc.) as \textit{inputs} in the same model. \cite{cotterell-sigmorphon2016} achieve  \textit{state-of-the-art} performance in a problem of morphological flexion, postulated in a shared task (\textit{SIGMORPHON Shared Task} (\url{http://www.sigmorphon.org/})). In this problem, morphological data sets for 10 languages (Spanish, German, Finnish, Russian, Turkish, Georgian, Navajo, Arabic and Hungarian) with different typological characteristics were introduced. For the task of generating motto inflections, the \cite{cotterell-sigmorphon2016} system obtained an average accuracy of 95.56\% in all languages, varying from
+Maltese (88.99\%) to Hungarian (99.30\%).
+
+Thus, we have as motivation for this research the use of the \textit{Encoder-Decoder} model for learning verbal inflection. The \textit{Encoder-Decoder} model, despite presenting promising results, has not yet been applied at an exclusively phonetic level (as in (\cite{rumelhart:1986})), since previous research has shown results at the level of characters and with morphological labels. In addition, we also see that the model has never been tested in the Portuguese language.
+
+
+\subsection{Scope}
+\label{sec:escopo}
+
+In comparison to English, it is possible to argue that the Portuguese language is more complex. In English, considering the present tense, we see the distinction of only two forms: (i) the form for \textit{I, We, They} (as in \textit{walk}) and (ii) \textit{he/she/it}(\textit{walks}). An exception to this rule is the verb \textit{to be}, which has three possible forms: (i) I \textit{am}, (ii) he/she/it \textit{is} and (iii) they \textit{are}. In the case of the \textit{Simple Past}, it presents a greater number of forms also only for the group \textit{to be}: (i) I/he/she/it \textit{was}, and (ii) They/We \textit{were}; the others do not have person identification (\cite{Nelson:2010}). In Portuguese, the traditional norm distinguishes six people: 1\aup{st}: Eu (I), 2\aup{nd}: Tu (You), 3\aup{rd}: Ele/Ela (He/She), 4\aup{th}: Nós (We), 5\aup{th}: Vós (You - plural), 6\aup{th}: Eles (They). However, today we see that the forms associated with 2\aup{nd} e 5\aup{th} persons are falling into disuse. The 2\aup{nd} person, “Tu”, is still used in some regions of Brazil, but it has usually been reproduced as the form of 3\aup{rd} person (Você (You)/Ele (he) \textit{gosta} (like)). Likewise, the 5\aup{th} form has been replaced by the 6\aup{th} person (Voc
+ês (You - plural)/Eles (They) \textit{gostam} (like)) (\cite{1999:camara}).\footnote{It is also interesting to note that lately the 4\aup{th} (N
+ós - We) has been alternated with the use of “A gente”, whose verbal form also corresponds to the 3\aup{rd} person (A gente \textit{gosta}).}
+
+Regarding irregularities, in English irregular verbs are found only in the \textit{Simple Past} and \textit{Past Participle}, while the verbal system of Portuguese is full of irregularities in all times, modes and persons. Take the verb "\textit{dizer}" (to say), for example. At the present time and indicative way, we note the presence of irregularity in the first and third persons of singular (“\textit{digo}” e \textit{“diga”}). In the Perfect Past tense (pretérito perfeito), the paradigm is totally irregular, with: “\textit{disse}”, “\textit{disseste}”, “\textit{disse}”, “\textit{dissemos}”, “\textit{dissestes}” and “\textit{disseram}”. In the Simple Future, we have: “\textit{direi}”, “\textit{dirás}”, “\textit{dirá}”, “\textit{diremos}”, “\textit{direis}” e “\textit{dirão}”.\footnote{It is also possible to observe irregularities in the subjunctive and imperative modes in all paradigms.} 
+
+Despite the complexity of Portuguese being relevant to the challenge of learning to inflect irregular verbs, we opted for a more restricted study. The reason for this limitation stems mainly from the absence of a corpus prepared to carry out the task. Thus, by limiting irregularities to a single paradigm, we put the level of difficulty at a level similar to that of the research by \cite{rumelhart:1986}, with the main difference (and possibly extra difficulty) being the three possible combinations.
+
+The scope was therefore restricted to 1\aup {st} Person of the Singular in the Present tense and Indicative mode (with examples already explored in Section \ref{sec:Aprend_port}). In this way, verbs that show irregularity in another tense, mode or person other than the 1\aup{st} singular person in the present tense and indicative mode, will be treated as belonging to the regulars class. As an example, consider the verb \textit{correr} (\textit{to run}). This verb has regular inflection for the 1\aup{st} Person (\textit{corro} (/ko\ipa{\:r}\textupsilon/))), but it is irregular for the 3 \aup{rd} Person (\textit{corre} (/k\textopeno\ipa{\:r}i/)). Thus, although \textit{correr} is an irregular verb, as it has a regular inflection in the chosen paradigm, it will be treated as regular for the purposes of this research. 
